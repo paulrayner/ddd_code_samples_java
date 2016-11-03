@@ -25,7 +25,7 @@ public class Contract {
 			claims.add(newClaim);
 		} else {
 			throw new ContractException(
-					"Contract is not active or amount is less than LOL");
+					"Contract is not active or amount is less than limit of liability");
 		}
 	}
 
