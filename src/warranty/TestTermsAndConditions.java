@@ -1,12 +1,12 @@
 package warranty;
 
-import static junit.framework.Assert.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import warranty.util.ImmutableDate;
 
 public class TestTermsAndConditions {
 	
@@ -16,22 +16,22 @@ public class TestTermsAndConditions {
     	// A value object must be created whole.
 		SimpleDateFormat sourceFormat = new SimpleDateFormat("MM-dd-yyyy");
 
-		Date effectiveDate = sourceFormat.parse("08-05-2010");
-		Date purchaseDate = sourceFormat.parse("08-05-2010");
-		Date expirationDate = sourceFormat.parse("08-05-2012"); 
+		ImmutableDate effectiveDate = ImmutableDate.of(sourceFormat.parse("08-05-2010").getTime());
+		ImmutableDate purchaseDate = ImmutableDate.of(sourceFormat.parse("08-05-2010").getTime());
+		ImmutableDate expirationDate = ImmutableDate.of(sourceFormat.parse("08-05-2012").getTime()); 
 
 		TermsAndConditions termsAndConditions = new TermsAndConditions(
 														effectiveDate,
 														expirationDate, 
 														purchaseDate, 90);
 
-		Date newExpirationDate = sourceFormat.parse("08-05-2013"); 
+		ImmutableDate newExpirationDate = ImmutableDate.of(sourceFormat.parse("08-05-2013").getTime()); 
 		TermsAndConditions expectedTermsAndConditions = new TermsAndConditions(
 														effectiveDate,
 														newExpirationDate, 
 														purchaseDate, 90);
 
-        assertEquals(expectedTermsAndConditions, termsAndConditions.annuallyExtended());
+		Assert.assertEquals(expectedTermsAndConditions, termsAndConditions.annuallyExtended());
 
         // Note: annuallyExtended is a side-effect-free function, with closure of operation
         TermsAndConditions expectedUnmodified = new TermsAndConditions(
@@ -39,7 +39,7 @@ public class TestTermsAndConditions {
 				expirationDate, 
 				effectiveDate, 90);
         
-        assertEquals(expectedUnmodified, termsAndConditions);       
+        Assert.assertEquals(expectedUnmodified, termsAndConditions);       
     }
     
 }

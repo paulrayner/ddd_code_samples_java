@@ -1,76 +1,58 @@
 package warranty;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
-
-import warranty.Claim;
 
 public class Contract {
 
-	public Contract(int id, double purchasePrice, TermsAndConditions termsAndConditions) {
+	private final int id;
+	public final double purchasePrice;
+	private TermsAndConditions termsAndConditions;
+	private List<Claim> claims;
+
+	public Contract(int id, double purchasePrice,
+			TermsAndConditions termsAndConditions) {
 		this.id = id;
 		this.purchasePrice = purchasePrice;
 		this.termsAndConditions = termsAndConditions;
+		this.claims = new ArrayList<Claim>();
 	}
 
-	public final int id;
-	public double purchasePrice;
-	public TermsAndConditions termsAndConditions;
-
-	public Status status(Date date)
-	{
-		if (termsAndConditions.isActive(date))
-			{
-				return Status.ACTIVE;
-			}
-		if (termsAndConditions.isPending(date))
-		{
-			return Status.PENDING;
+	public void add(Claim newClaim) {
+		if (newClaim.amount < limitOfLiability()
+				&& this.termsAndConditions.isActive(newClaim.date)) {
+			claims.add(newClaim);
+		} else {
+			throw new ContractException(
+					"Contract is not active or amount is less than LOL");
 		}
-		if (termsAndConditions.isExpired(date))
-		{
-			return Status.EXPIRED;
-		}
-		return Status.INVALID;
 	}
-	
-    public enum Status { PENDING, ACTIVE, EXPIRED, INVALID }
-	
-    private List<Claim> Claims = new ArrayList<Claim>();
 
-    public void add(Claim Claim)
-    {
-        Claims.add(Claim);
-    }
+	public List<Claim> getClaims() {
+		return Collections.unmodifiableList(claims);
+	}
 
-    public List<Claim> getClaims()
-    {
-        return Claims; 
-    }
+	public void remove(Claim Claim) {
+		claims.remove(Claim);
+	}
 
-    public void remove(Claim Claim)
-    {
-        Claims.remove(Claim);
-    }
-    
-    public void extendAnnualSubscription() throws ParseException
-    {
-    		this.termsAndConditions = this.termsAndConditions.annuallyExtended();
-    }
-    
-    public double limitOfLiability()
-    {
+	public void extendAnnualSubscription() {
+		this.termsAndConditions = this.termsAndConditions.annuallyExtended();
+	}
+
+	public TermsAndConditions termsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public double limitOfLiability() {
 		double claimTotal = 0;
-		List<Claim> claims = new ArrayList<Claim>();
-		claims.addAll(this.getClaims());
-		
-		for (Claim claim:claims)
-		{
+
+		for (Claim claim : getClaims()) {
 			claimTotal += claim.amount;
 		}
-		
+
 		return (this.purchasePrice - claimTotal) * 0.8;
-    }
+	}
+
 }
