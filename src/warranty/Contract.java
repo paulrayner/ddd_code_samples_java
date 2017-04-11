@@ -1,43 +1,58 @@
 package warranty;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
-
-import warranty.Claim;
 
 public class Contract {
 
-	public Contract(int id, double d) {
-		this.purchasePrice = d;
-		this.status = Status.PENDING;
+	private final int id;
+	public final double purchasePrice;
+	private TermsAndConditions termsAndConditions;
+	private List<Claim> claims;
+
+	public Contract(int id, double purchasePrice,
+			TermsAndConditions termsAndConditions) {
+		this.id = id;
+		this.purchasePrice = purchasePrice;
+		this.termsAndConditions = termsAndConditions;
+		this.claims = new ArrayList<Claim>();
 	}
 
-	public int id;
-	public double purchasePrice;
-	public Date effectiveDate = new Date();
-	public Date expirationDate = new Date();
-	public Date purchaseDate = new Date();
-	public int inStoreGuaranteeDays;
-	public Status status;
-	public Product product;
-	
-    public enum Status { PENDING, ACTIVE, EXPIRED }
-	
-    private List<Claim> Claims = new ArrayList<Claim>();
+	public void add(Claim newClaim) {
+		if (newClaim.amount < limitOfLiability()
+				&& this.termsAndConditions.isActive(newClaim.date)) {
+			claims.add(newClaim);
+		} else {
+			throw new ContractException(
+					"Contract is not active or amount is less than limit of liability");
+		}
+	}
 
-    public void add(Claim Claim)
-    {
-        Claims.add(Claim);
-    }
+	public List<Claim> getClaims() {
+		return Collections.unmodifiableList(claims);
+	}
 
-    public List<Claim> getClaims()
-    {
-        return Claims; 
-    }
+	public void remove(Claim Claim) {
+		claims.remove(Claim);
+	}
 
-    public void remove(Claim Claim)
-    {
-        Claims.remove(Claim);
-    }
+	public void extendAnnualSubscription() {
+		this.termsAndConditions = this.termsAndConditions.annuallyExtended();
+	}
+
+	public TermsAndConditions termsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public double limitOfLiability() {
+		double claimTotal = 0;
+
+		for (Claim claim : getClaims()) {
+			claimTotal += claim.amount;
+		}
+
+		return (this.purchasePrice - claimTotal) * 0.8;
+	}
+
 }
