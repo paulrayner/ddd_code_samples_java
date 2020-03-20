@@ -26,15 +26,20 @@ final class TermsAndConditions implements ValueObject
         DateTimeImmutable $purchaseDate,
         DateInterval $inStoreGuaranteeDuration
     ) {
-        $this->effectiveDate = $effectiveDate;
-        $this->expirationDate = $expirationDate;
-        $this->purchaseDate = $purchaseDate;
+        $this->effectiveDate = $effectiveDate->setTime(0,0);
+        $this->expirationDate = $expirationDate->setTime(0,0);
+        $this->purchaseDate = $purchaseDate->setTime(0,0);
         $this->inStoreGuaranteeDuration = $inStoreGuaranteeDuration;
     }
 
     public function getInStoreGuaranteeInDays(): int
     {
         return $this->inStoreGuaranteeDuration->days;
+    }
+
+    public function isActive(DateTimeImmutable $compareDate): bool
+    {
+        return $this->effectiveDate <= $compareDate && $this->expirationDate >= $compareDate;
     }
 
     public function isSame(ValueObject $object): bool

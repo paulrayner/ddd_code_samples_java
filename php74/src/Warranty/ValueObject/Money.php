@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DDDCodeSamples\Warranty\ValueObject;
 
+use DDDCodeSamples\Warranty\Exception\CurrencyMismatchException;
 use DDDCodeSamples\Warranty\Interfaces\ValueObject;
 
 /**
@@ -27,6 +28,20 @@ final class Money implements ValueObject
         return new static((string)$int, Currency::USD());
     }
 
+    public function add(Money $otherMoney): Money
+    {
+        if ($this->currency->isSame($otherMoney->currency)) {
+            $newAmount = (string)((int)$this->amount + (int)$otherMoney->amount); // Don't do this for real, use a proper number-string math library!
+            return new static($newAmount, $this->currency);
+        }
+        throw new CurrencyMismatchException();
+    }
+
+    public function greaterThan(Money $otherMoney): bool
+    {
+        return (int)$this->amount > (int)$otherMoney->amount; // Don't do this for real, use a proper number-string math library!
+    }
+
     public function isSame(ValueObject $object): bool
     {
         return $object instanceof self &&
@@ -42,5 +57,20 @@ final class Money implements ValueObject
     public function getAmount(): string
     {
         return $this->amount;
+    }
+
+    public function multiply(float $multiplier): Money
+    {
+        $newAmount = (string)((int)$this->amount * $multiplier); // Don't do this for real, use a proper number-string math library!
+        return new static($newAmount, $this->currency);
+    }
+
+    public function subtract(Money $otherMoney): Money
+    {
+        if ($this->currency->isSame($otherMoney->currency)) {
+            $newAmount = (string)((int)$this->amount - (int)$otherMoney->amount); // Don't do this for real, use a proper number-string math library!
+            return new static($newAmount, $this->currency);
+        }
+        throw new CurrencyMismatchException();
     }
 }
