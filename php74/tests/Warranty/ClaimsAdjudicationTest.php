@@ -17,11 +17,11 @@ use DDDCodeSamples\Warranty\ValueObject\TermsAndConditions;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class TestClaimsAdjudication
+ * Class ClaimsAdjudicationTest
  *
- * @package Warranty
+ * @package DDDCodeSamples\Tests\Warranty
  */
-class TestClaimsAdjudication extends TestCase
+class ClaimsAdjudicationTest extends TestCase
 {
     /**
      * @test

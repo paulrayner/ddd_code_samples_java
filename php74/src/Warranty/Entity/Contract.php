@@ -17,6 +17,7 @@ use DDDCodeSamples\Warranty\ValueObject\TermsAndConditions;
  */
 final class Contract
 {
+    private const LIMIT_OF_LIABILITY = 0.8;
     private ContractId $id;
     private Money $purchasePrice;
     private TermsAndConditions $termsAndConditions;
@@ -39,15 +40,22 @@ final class Contract
         }
     }
 
+    public function claimWithinLimitOfLiability(Claim $claim): bool
+    {
+        $currentClaimsTotal = $this->claims->calculateClaimsTotal();
+        return $this->purchasePrice->subtract($currentClaimsTotal)
+                                   ->multiply(self::LIMIT_OF_LIABILITY)
+                                   ->greaterThan($claim->getClaimAmount());
+    }
+
     public function claimIsTimely(Claim $claim): bool
     {
         return $this->termsAndConditions->isActive($claim->getClaimDate());
     }
 
-    public function claimWithinLimitOfLiability(Claim $claim): bool
+    public function extendAnnualSubscription(): void
     {
-        $currentClaimsTotal = $this->claims->calculateClaimsTotal();
-        return $this->purchasePrice->subtract($currentClaimsTotal)->multiply(0.8)->greaterThan($claim->getClaimAmount());
+        $this->termsAndConditions = $this->termsAndConditions->extendAnnually();
     }
 
     public function getClaims(): ClaimsCollection

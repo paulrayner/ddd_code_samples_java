@@ -26,10 +26,20 @@ final class TermsAndConditions implements ValueObject
         DateTimeImmutable $purchaseDate,
         DateInterval $inStoreGuaranteeDuration
     ) {
-        $this->effectiveDate = $effectiveDate->setTime(0,0);
-        $this->expirationDate = $expirationDate->setTime(0,0);
-        $this->purchaseDate = $purchaseDate->setTime(0,0);
+        $this->effectiveDate = $effectiveDate->setTime(0, 0);
+        $this->expirationDate = $expirationDate->setTime(0, 0);
+        $this->purchaseDate = $purchaseDate->setTime(0, 0);
         $this->inStoreGuaranteeDuration = $inStoreGuaranteeDuration;
+    }
+
+    public function extendAnnually(): self
+    {
+        return new static(
+            $this->effectiveDate,
+            $this->expirationDate->add(DateInterval::createFromDateString('1 year')),
+            $this->purchaseDate,
+            $this->inStoreGuaranteeDuration
+        );
     }
 
     public function getInStoreGuaranteeInDays(): int
@@ -79,4 +89,6 @@ final class TermsAndConditions implements ValueObject
     ): self {
         return new static($effectiveDate, $expirationDate, $purchaseDate, $inStoreGuaranteeDuration);
     }
+
+
 }

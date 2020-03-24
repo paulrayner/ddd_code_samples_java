@@ -39,7 +39,7 @@ Rebuild the container (required if any of the Dockerfiles have been changed)
 
 ## Run Tests
 ```
-> docker exec -it ddd-code-sample-php74 php vendor/bin/phpunit tests/Warranty/*
+> docker exec -it ddd-code-sample-php74 ./vendor/bin/phpunit
 ```
 
 ## Debugging PHP
