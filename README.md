@@ -10,4 +10,4 @@ N.b.: This code has a lot of issues. This is deliberate. For example, the majori
 
 Load the project files from the `main` branch into a new project in your IDE, get the dependencies, then build the code and run all unit tests to make sure they pass.
 
-This code has been tested successfully on IDEA IntelliJ Community Edition (build 2021.2.2) using Java 8 (OpenJDK 17). Unit tests use [Junit 5](https://junit.org/junit5/). 
+This code has been tested successfully on IntelliJ IDEA Community Edition (build 2021.2.2) using Java 8 (OpenJDK 17). Unit tests use [Junit 5](https://junit.org/junit5/). 
