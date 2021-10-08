@@ -16,7 +16,6 @@ class ContractTest {
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         assertNotNull(contract.id);
-        System.out.println(contract.id);
         assertEquals(100.0, contract.purchasePrice);
         assertEquals(Contract.Status.PENDING, contract.status);
         assertEquals(contract.purchaseDate, new Date(2010, 5, 7));
