@@ -1,18 +1,18 @@
 package warranty;
 
 public class Product {
+	public final String name;
+	public final String serialNumber;
+	public final String make;
+	public final String model;
+
 	public Product(String name, String serialNumber, String make, String model) {
-		super();
 		this.name = name;
 		this.serialNumber = serialNumber;
 		this.make = make;
 		this.model = model;
 	}
-	public final String name;
-	public final String serialNumber;
-	public final String make;
-	public final String model;
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

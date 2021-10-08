@@ -1,15 +1,14 @@
 package warranty;
 
 public class LineItem {
+	public final double amount;
+	public final String description;
+
 	public LineItem(double amount, String description) {
-		super();
 		this.amount = amount;
 		this.description = description;
 	}
-	
-	public final double amount;
-	public final String description;
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
