@@ -1,9 +1,6 @@
 package warranty;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Claim represents a request for a benefit on an extended warranty. It contains a
@@ -21,5 +18,13 @@ public class Claim {
 		this.id          = UUID.randomUUID();
 		this.amount      = amount;
 		this.failureDate = failureDate;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Claim claim = (Claim) o;
+		return Objects.equals(id, claim.id);
 	}
 }

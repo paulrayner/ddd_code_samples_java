@@ -35,6 +35,16 @@ class ClaimTest {
     @Test
     public void TestClaimEquality()
     {
+        Claim claim1 = new Claim(100.0, new Date(2010, 5, 8));
+        Claim claim2 = new Claim(100.0, new Date(2010, 5, 8));
+        Claim claim3 = new Claim(100.0, new Date(2010, 5, 8));
+
+        UUID expectedId = UUID.randomUUID();
+        claim1.id = expectedId;
+        claim2.id = expectedId;
+        assertEquals(claim1, claim2);
+
+        assertNotEquals(claim1, claim3);
     }
 
 }
