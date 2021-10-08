@@ -1,43 +1,28 @@
 package warranty;
 
+import java.util.Objects;
+
 public class LineItem {
+	public final String type;
 	public final double amount;
 	public final String description;
 
-	public LineItem(double amount, String description) {
-		this.amount = amount;
+	public LineItem(String type, double amount, String description) {
+		this.type        = type;
+		this.amount      = amount;
 		this.description = description;
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LineItem other = (LineItem) obj;
-		if (Double.doubleToLongBits(amount) != Double
-				.doubleToLongBits(other.amount))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		return true;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		LineItem lineItem = (LineItem) o;
+		return Double.compare(lineItem.amount, amount) == 0 && Objects.equals(type, lineItem.type) && Objects.equals(description, lineItem.description);
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, amount, description);
+	}
 }
