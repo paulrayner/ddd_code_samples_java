@@ -24,6 +24,29 @@ class ContractTest {
         assertEquals(product, contract.coveredProduct);
     }
 
+    @Test
+    public void TestLimitOfLiabilityWithOneClaim() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        assertNotNull(contract.id);
+        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
+
+        assertEquals(70.0, contract.LimitOfLiability());
+    }
+
+    @Test
+    public void TestLimitOfLiabilityWithMultipleClaims() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        assertNotNull(contract.id);
+        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
+        contract.add(new Claim(20.0, new Date(2010, 10, 1)));
+
+        assertEquals(50.0, contract.LimitOfLiability());
+    }
+
     // Entities compare by unique IDs, not properties
     @Test
     public void TestContractEquality()

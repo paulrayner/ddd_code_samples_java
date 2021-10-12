@@ -44,6 +44,15 @@ public class Contract {
         return Claims; 
     }
 
+    public double LimitOfLiability() {
+        final double liability_percentage = 0.8;
+        return (purchasePrice * liability_percentage) - ClaimTotal();
+    }
+
+    private double ClaimTotal() {
+        return this.getClaims().stream().mapToDouble(c -> c.amount).sum();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
