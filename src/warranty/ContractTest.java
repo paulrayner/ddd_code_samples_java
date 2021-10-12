@@ -25,6 +25,31 @@ class ContractTest {
     }
 
     @Test
+    public void TestContractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        // check PENDING (default) state
+        assertFalse(contract.InEffectFor(new Date(2010, 5, 9)));
+        // check ACTIVE state
+        contract.status = Contract.Status.ACTIVE;
+        assertFalse(contract.InEffectFor(new Date(2010, 5, 7)));
+        assertTrue(contract.InEffectFor(new Date(2010, 5, 8)));
+        assertTrue(contract.InEffectFor(new Date(2013, 5, 7)));
+        assertFalse(contract.InEffectFor(new Date(2013, 5, 9)));
+    }
+
+    @Test
+    public void TestLimitOfLiabilityWithNoClaims() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        assertNotNull(contract.id);
+
+        assertEquals(80.0, contract.LimitOfLiability());
+    }
+
+    @Test
     public void TestLimitOfLiabilityWithOneClaim() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -45,6 +70,18 @@ class ContractTest {
         contract.add(new Claim(20.0, new Date(2010, 10, 1)));
 
         assertEquals(50.0, contract.LimitOfLiability());
+    }
+
+    @Test
+    public void TestClaimTotalSumOfClaimAmounts() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        assertNotNull(contract.id);
+        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
+        contract.add(new Claim(20.0, new Date(2010, 10, 1)));
+
+        assertEquals(30.0, contract.ClaimTotal());
     }
 
     // Entities compare by unique IDs, not properties
