@@ -2,6 +2,8 @@ package warranty;
 
 import warranty.Contract.Status;
 
+import java.util.Date;
+
 /**
  * Adjudicate/adjudication - a judgment made on a claim to determine whether
  * we are legally obligated to process the claim against the warranty. From
@@ -14,12 +16,21 @@ import warranty.Contract.Status;
 public class ClaimsAdjudication {
 
 	public void Adjudicate(Contract contract, Claim newClaim) {
-		double claimTotal = contract.getClaims().stream().mapToDouble(c -> c.amount).sum();
-		if (((contract.purchasePrice - claimTotal) * 0.8 > newClaim.amount) &&
-				(contract.status == Status.ACTIVE) &&
-				(newClaim.failureDate.compareTo(contract.effectiveDate) >= 0) &&
-				(newClaim.failureDate.compareTo(contract.expirationDate) <= 0)) {
+		if ((LimitOfLiability(contract) > newClaim.amount) &&
+			 InEffectFor(contract, newClaim.failureDate)) {
 			contract.add(newClaim);
 		}
+	}
+
+	// These two new methods we've added seem to be responsibilities of Contract. Let's move them...
+	public double LimitOfLiability(Contract contract) {
+		double claimTotal = contract.getClaims().stream().mapToDouble(c -> c.amount).sum();
+		return (contract.purchasePrice - claimTotal) * 0.8;
+	}
+
+	public boolean InEffectFor(Contract contract, Date failureDate) {
+		return  (contract.status == Status.ACTIVE) &&
+				(failureDate.compareTo(contract.effectiveDate) >= 0) &&
+				(failureDate.compareTo(contract.expirationDate) <= 0);
 	}
 }
