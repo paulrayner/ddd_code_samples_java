@@ -11,7 +11,8 @@ class ClaimsAdjudicationTest {
     Contract FakeContract()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
         contract.status = Contract.Status.ACTIVE;
 
         return contract;

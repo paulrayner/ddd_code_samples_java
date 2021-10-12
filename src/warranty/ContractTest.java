@@ -13,21 +13,21 @@ class ContractTest {
     public void TestContractIsSetupCorrectly()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         assertNotNull(contract.id);
         assertEquals(100.0, contract.purchasePrice);
         assertEquals(Contract.Status.PENDING, contract.status);
-        assertEquals(contract.purchaseDate, new Date(2010, 5, 7));
-        assertEquals(contract.effectiveDate, new Date(2010, 5, 8));
-        assertEquals(contract.expirationDate, new Date(2013, 5, 8));
+        assertEquals(termsAndConditions, contract.termsAndConditions);
         assertEquals(product, contract.coveredProduct);
     }
 
     @Test
     public void TestContractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         // check PENDING (default) state
         assertFalse(contract.InEffectFor(new Date(2010, 5, 9)));
@@ -42,7 +42,8 @@ class ContractTest {
     @Test
     public void TestLimitOfLiabilityWithNoClaims() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         assertNotNull(contract.id);
 
@@ -52,7 +53,8 @@ class ContractTest {
     @Test
     public void TestLimitOfLiabilityWithOneClaim() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         assertNotNull(contract.id);
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
@@ -63,7 +65,8 @@ class ContractTest {
     @Test
     public void TestLimitOfLiabilityWithMultipleClaims() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         assertNotNull(contract.id);
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
@@ -75,7 +78,8 @@ class ContractTest {
     @Test
     public void TestClaimTotalSumOfClaimAmounts() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
 
         assertNotNull(contract.id);
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
@@ -89,9 +93,10 @@ class ContractTest {
     public void TestContractEquality()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract1 = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
-        Contract contract2 = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
-        Contract contract3 = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract1 = new Contract(100.0, product, termsAndConditions);
+        Contract contract2 = new Contract(100.0, product, termsAndConditions);
+        Contract contract3 = new Contract(100.0, product, termsAndConditions);
 
         UUID expectedId = UUID.randomUUID();
         contract1.id = expectedId;

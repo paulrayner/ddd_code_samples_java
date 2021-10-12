@@ -13,25 +13,21 @@ import java.util.UUID;
  */
 
 public class Contract {
-	public UUID    id = UUID.randomUUID();;
-	public double  purchasePrice;
-    public Product coveredProduct;
-    public Date    purchaseDate;
-	public Date    effectiveDate;
-	public Date    expirationDate;
-	public Status  status;
+    public UUID               id = UUID.randomUUID();;
+	public double             purchasePrice;
+    public Product            coveredProduct;
+	public Status             status;
+    public TermsAndConditions termsAndConditions;
 
     public enum Status { PENDING, ACTIVE, EXPIRED }
 
     private final List<Claim> Claims = new ArrayList<Claim>();
 
-    public Contract(double purchasePrice, Product product, Date purchaseDate, Date effectiveDate, Date expirationDate) {
-        this.purchasePrice   = purchasePrice;
-        this.coveredProduct  = product;
-        this.status          = Status.PENDING;
-        this.purchaseDate    = purchaseDate;
-        this.effectiveDate   = effectiveDate;
-        this.expirationDate  = expirationDate;
+    public Contract(double purchasePrice, Product product, TermsAndConditions termsAndConditions) {
+        this.purchasePrice      = purchasePrice;
+        this.coveredProduct     = product;
+        this.status             = Status.PENDING;
+        this.termsAndConditions = termsAndConditions;
     }
 
     public void add(Claim Claim)
@@ -45,9 +41,9 @@ public class Contract {
     }
 
     public boolean InEffectFor(Date failureDate) {
-        return  (status == Status.ACTIVE) &&
-                (failureDate.compareTo(effectiveDate) >= 0) &&
-                (failureDate.compareTo(expirationDate) <= 0);
+        return (status == Status.ACTIVE) &&
+               (failureDate.compareTo(termsAndConditions.effectiveDate) >= 0) &&
+               (failureDate.compareTo(termsAndConditions.expirationDate) <= 0);
     }
 
     public double LimitOfLiability() {
