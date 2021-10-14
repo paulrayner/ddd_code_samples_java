@@ -92,6 +92,18 @@ class ContractTest {
         assertEquals(50.0, contract.LimitOfLiability());
     }
 
+    @Test
+    public void TestExtendAnnualSubscription() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
+
+        contract.ExtendAnnualSubscription();
+        var extendedTermsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2014, 5, 8));
+
+        assertEquals(extendedTermsAndConditions, contract.termsAndConditions);
+    }
+
     // Entities compare by unique IDs, not properties
     @Test
     public void TestContractEquality()

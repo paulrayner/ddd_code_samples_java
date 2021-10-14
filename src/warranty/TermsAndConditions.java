@@ -2,6 +2,7 @@ package warranty;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Calendar;
 
 /**
  * Terms and Conditions represents the legal obligations for the contract, such as the coverage period
@@ -25,6 +26,10 @@ public class TermsAndConditions {
         return Contract.Status.ACTIVE;
     }
 
+    public TermsAndConditions AnnuallyExtended() {
+        return new TermsAndConditions(purchaseDate, effectiveDate, IncreaseDateByOneYear(expirationDate));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,4 +42,13 @@ public class TermsAndConditions {
     public int hashCode() {
         return Objects.hash(purchaseDate, effectiveDate, expirationDate);
     }
+
+    // workaround for Date
+    private Date IncreaseDateByOneYear(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.YEAR, 1);
+        return cal.getTime();
+    }
+
 }

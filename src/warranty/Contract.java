@@ -63,6 +63,10 @@ public class Contract {
         return this.getClaims().stream().mapToDouble(c -> c.amount).sum();
     }
 
+    public void ExtendAnnualSubscription() {
+        termsAndConditions = termsAndConditions.AnnuallyExtended();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
