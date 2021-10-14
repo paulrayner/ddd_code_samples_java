@@ -37,6 +37,14 @@ class TermsAndConditionsTest {
         assertEquals(extendedTermsAndConditions, termsAndConditions.AnnuallyExtended());
     }
 
+// Could write tests to prevent invalid states
+//    @Test
+//    public void TestTermsAndConditionsRejectsInvalidDates() {
+//        assertThrows(Exception.class, () -> {
+//            new TermsAndConditions(new Date(2010, 5, 9), new Date(2010, 5, 8), new Date(2013, 5, 8));
+//        });
+//    }
+
     // TermsAndConditions is an example of a value object. See https://martinfowler.com/bliki/ValueObject.html for more details
     @Test
     public void TestTermsAndConditionsEquality() {

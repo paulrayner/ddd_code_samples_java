@@ -29,14 +29,17 @@ class ContractTest {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        // check PENDING (default) state
+        contract.status = Contract.Status.PENDING;
         assertFalse(contract.InEffectFor(new Date(2010, 5, 9)));
-        // check ACTIVE state
+
         contract.status = Contract.Status.ACTIVE;
         assertFalse(contract.InEffectFor(new Date(2010, 5, 7)));
         assertTrue(contract.InEffectFor(new Date(2010, 5, 8)));
         assertTrue(contract.InEffectFor(new Date(2013, 5, 7)));
         assertFalse(contract.InEffectFor(new Date(2013, 5, 9)));
+
+        contract.status = Contract.Status.EXPIRED;
+        assertFalse(contract.InEffectFor(new Date(2010, 5, 8)));
     }
 
     @Test
@@ -52,7 +55,7 @@ class ContractTest {
     }
 
     @Test
-    public void TestLimitOfLiability() {
+    public void TestClaimAmountsWithinLimitOfLiability() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);

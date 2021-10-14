@@ -14,7 +14,13 @@ public class TermsAndConditions {
     public final Date effectiveDate;
     public final Date expirationDate;
 
-    public TermsAndConditions(Date purchaseDate, Date effectiveDate, Date expirationDate) {
+    public TermsAndConditions(Date purchaseDate, Date effectiveDate, Date expirationDate)  {
+        // Could add validation logic here to throw exceptions for invalid terms and conditions states,
+        // such as throwing exceptions when dates are out of sequence
+        if ((purchaseDate.compareTo(effectiveDate) > 0) ||
+            (effectiveDate.compareTo(expirationDate) > 0)) {
+            // Perhaps throw an exception here...
+        }
         this.purchaseDate = purchaseDate;
         this.effectiveDate = effectiveDate;
         this.expirationDate = expirationDate;
