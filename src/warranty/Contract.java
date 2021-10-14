@@ -13,11 +13,11 @@ import java.util.UUID;
  */
 
 public class Contract {
-    public UUID               id = UUID.randomUUID();;
-	public double             purchasePrice;
-    public Product            coveredProduct;
-	public Status             status;
-    public TermsAndConditions termsAndConditions;
+    public UUID                       id = UUID.randomUUID();;
+	public double                     purchasePrice;
+    public Product                    coveredProduct;
+	public Status                     status;
+    public TermsAndConditions         termsAndConditions;
 
     public enum Status { PENDING, ACTIVE, EXPIRED }
 
@@ -40,10 +40,18 @@ public class Contract {
         return Claims; 
     }
 
+    public boolean Covers(Claim claim) {
+        return  InEffectFor(claim.failureDate) &&
+                WithinLimitOfLiability(claim.amount);
+    }
+
     public boolean InEffectFor(Date failureDate) {
-        return (status == Status.ACTIVE) &&
-               (failureDate.compareTo(termsAndConditions.effectiveDate) >= 0) &&
-               (failureDate.compareTo(termsAndConditions.expirationDate) <= 0);
+        return termsAndConditions.Status(failureDate) == Status.ACTIVE &&
+               status == Status.ACTIVE;
+    }
+
+    public boolean WithinLimitOfLiability(double amount) {
+        return amount < this.LimitOfLiability();
     }
 
     public double LimitOfLiability() {

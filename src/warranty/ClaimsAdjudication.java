@@ -12,8 +12,7 @@ package warranty;
 public class ClaimsAdjudication {
 
 	public void Adjudicate(Contract contract, Claim newClaim) {
-		if ((contract.LimitOfLiability() > newClaim.amount) &&
-			 contract.InEffectFor(newClaim.failureDate)) {
+		if (contract.Covers(newClaim)) {
 			contract.add(newClaim);
 		}
 	}

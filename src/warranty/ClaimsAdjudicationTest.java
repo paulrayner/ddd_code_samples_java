@@ -18,6 +18,7 @@ class ClaimsAdjudicationTest {
         return contract;
     }
 
+    // Now that we have this logic moved to Contract, we could create a test double for contract.Covers() and simplify these tests
     @Test
     void AdjudicateValidClaim() {
         Contract contract = FakeContract();
