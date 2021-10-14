@@ -21,6 +21,13 @@ class TermsAndConditionsTest {
         assertEquals(Contract.Status.EXPIRED, termsAndConditions.Status(new Date(2013, 5, 9)));
     }
 
+    // Moved from Contract
+    @Test
+    public void TestTermsAndConditionsLimitOfLiability() {
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        assertEquals(80.0, termsAndConditions.LimitOfLiability(100.0));
+    }
+
     @Test
     public void TestTermsAndConditionsExtendAnnually() {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));

@@ -50,13 +50,12 @@ public class Contract {
                status == Status.ACTIVE;
     }
 
-    public boolean WithinLimitOfLiability(double amount) {
-        return amount < this.LimitOfLiability();
+    public boolean WithinLimitOfLiability(double claimAmount) {
+        return claimAmount < RemainingLiability();
     }
 
-    public double LimitOfLiability() {
-        final double liability_percentage = 0.8;
-        return (purchasePrice * liability_percentage) - ClaimTotal();
+    private double RemainingLiability() {
+        return termsAndConditions.LimitOfLiability(purchasePrice) - ClaimTotal();
     }
 
     public double ClaimTotal() {

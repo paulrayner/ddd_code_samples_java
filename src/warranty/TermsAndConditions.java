@@ -26,6 +26,11 @@ public class TermsAndConditions {
         return Contract.Status.ACTIVE;
     }
 
+    public double LimitOfLiability(double purchasePrice) {
+        final double liability_percentage = 0.8;
+        return (purchasePrice * liability_percentage);
+    }
+
     public TermsAndConditions AnnuallyExtended() {
         return new TermsAndConditions(purchaseDate, effectiveDate, IncreaseDateByOneYear(expirationDate));
     }
@@ -50,5 +55,4 @@ public class TermsAndConditions {
         cal.add(Calendar.YEAR, 1);
         return cal.getTime();
     }
-
 }

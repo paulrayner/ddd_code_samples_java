@@ -45,7 +45,6 @@ class ContractTest {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        assertNotNull(contract.id);
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
         contract.add(new Claim(20.0, new Date(2010, 10, 1)));
 
@@ -53,14 +52,11 @@ class ContractTest {
     }
 
     @Test
-    public void TestLimitOfLiabilityWithNoClaims() {
+    public void TestLimitOfLiability() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        assertNotNull(contract.id);
-
-        assertEquals(80.0, contract.LimitOfLiability());
         assertTrue(contract.WithinLimitOfLiability(10));
         assertTrue(contract.WithinLimitOfLiability(79));
         assertFalse(contract.WithinLimitOfLiability(80)); // Must be less than the limit amount
@@ -68,28 +64,22 @@ class ContractTest {
     }
 
     @Test
-    public void TestLimitOfLiabilityWithOneClaim() {
+    public void TestActiveContractCoverage() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        assertNotNull(contract.id);
-        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
+        contract.status = Contract.Status.PENDING;
+        assertFalse(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
 
-        assertEquals(70.0, contract.LimitOfLiability());
-    }
+        contract.status = Contract.Status.ACTIVE;
+        assertTrue(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
+        assertTrue(contract.Covers(new Claim(79.0, new Date(2010, 10, 1))));
+        assertFalse(contract.Covers(new Claim(80.0, new Date(2010, 10, 1))));
+        assertFalse(contract.Covers(new Claim(90.0, new Date(2010, 10, 1))));
 
-    @Test
-    public void TestLimitOfLiabilityWithMultipleClaims() {
-        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
-        Contract contract = new Contract(100.0, product, termsAndConditions);
-
-        assertNotNull(contract.id);
-        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
-        contract.add(new Claim(20.0, new Date(2010, 10, 1)));
-
-        assertEquals(50.0, contract.LimitOfLiability());
+        contract.status = Contract.Status.EXPIRED;
+        assertFalse(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
     }
 
     @Test
