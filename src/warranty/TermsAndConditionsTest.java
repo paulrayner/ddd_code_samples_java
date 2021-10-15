@@ -9,32 +9,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class TermsAndConditionsTest {
 
     @Test
-    public void TestTermsAndConditionsStatus() {
+    public void termsAndConditionsStatus() {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         // Should be pending prior to effective date
-        assertEquals(Contract.Status.PENDING, termsAndConditions.Status(new Date(2010, 5, 7)));
+        assertEquals(Contract.Status.PENDING, termsAndConditions.status(new Date(2010, 5, 7)));
         // Should be active if between effective and expiration dates (inclusively)
-        assertEquals(Contract.Status.ACTIVE, termsAndConditions.Status(new Date(2010, 5, 8)));
-        assertEquals(Contract.Status.ACTIVE, termsAndConditions.Status(new Date(2013, 5, 8)));
+        assertEquals(Contract.Status.ACTIVE, termsAndConditions.status(new Date(2010, 5, 8)));
+        assertEquals(Contract.Status.ACTIVE, termsAndConditions.status(new Date(2013, 5, 8)));
         // Should be expired after to expiration date
-        assertEquals(Contract.Status.EXPIRED, termsAndConditions.Status(new Date(2013, 5, 9)));
+        assertEquals(Contract.Status.EXPIRED, termsAndConditions.status(new Date(2013, 5, 9)));
     }
 
     // Moved from Contract
     @Test
-    public void TestTermsAndConditionsLimitOfLiability() {
+    public void termsAndConditionsLimitOfLiability() {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
-        assertEquals(80.0, termsAndConditions.LimitOfLiability(100.0));
+        assertEquals(80.0, termsAndConditions.limitOfLiability(100.0));
     }
 
     @Test
-    public void TestTermsAndConditionsExtendAnnually() {
+    public void termsAndConditionsExtendAnnually() {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         TermsAndConditions extendedTermsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2014, 5, 8));
 
-        assertEquals(extendedTermsAndConditions, termsAndConditions.AnnuallyExtended());
+        assertEquals(extendedTermsAndConditions, termsAndConditions.annuallyExtended());
     }
 
 // Could write tests to prevent invalid states
@@ -47,7 +47,7 @@ class TermsAndConditionsTest {
 
     // TermsAndConditions is an example of a value object. See https://martinfowler.com/bliki/ValueObject.html for more details
     @Test
-    public void TestTermsAndConditionsEquality() {
+    public void termsAndConditionsEquality() {
         // A value object must be created whole
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
@@ -57,7 +57,7 @@ class TermsAndConditionsTest {
 
     // TermsAndConditions is an example of a value object. See https://martinfowler.com/bliki/ValueObject.html for more details
     @Test
-    public void TestTermsAndConditionsInequality() {
+    public void termsAndConditionsInequality() {
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         // Demonstrate equality by property - uses custom "equals" method in this example
