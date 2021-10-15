@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContractTest {
 
     @Test
-    public void TestContractIsSetupCorrectly()
+    public void contractIsSetupCorrectly()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -25,55 +25,43 @@ class ContractTest {
     }
 
     @Test
-    public void TestContractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
+    public void contractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         // check PENDING (default) state
-        assertFalse(contract.InEffectFor(new Date(2010, 5, 9)));
+        assertFalse(contract.inEffectFor(new Date(2010, 5, 9)));
         // check ACTIVE state
         contract.status = Contract.Status.ACTIVE;
-        assertFalse(contract.InEffectFor(new Date(2010, 5, 7)));
-        assertTrue(contract.InEffectFor(new Date(2010, 5, 8)));
-        assertTrue(contract.InEffectFor(new Date(2013, 5, 7)));
-        assertFalse(contract.InEffectFor(new Date(2013, 5, 9)));
+        assertFalse(contract.inEffectFor(new Date(2010, 5, 7)));
+        assertTrue(contract.inEffectFor(new Date(2010, 5, 8)));
+        assertTrue(contract.inEffectFor(new Date(2013, 5, 7)));
+        assertFalse(contract.inEffectFor(new Date(2013, 5, 9)));
     }
 
     @Test
-    public void TestLimitOfLiabilityWithNoClaims() {
+    public void limitOfLiabilityWithNoClaims() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         assertNotNull(contract.id);
 
-        assertEquals(80.0, contract.LimitOfLiability());
+        assertEquals(80.0, contract.limitOfLiability());
     }
 
     @Test
-    public void TestLimitOfLiabilityWithOneClaim() {
-        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
-        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
-
-        assertNotNull(contract.id);
-        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
-
-        assertEquals(70.0, contract.LimitOfLiability());
-    }
-
-    @Test
-    public void TestLimitOfLiabilityWithMultipleClaims() {
+    public void limitOfLiabilityWithOneClaim() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
         assertNotNull(contract.id);
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
-        contract.add(new Claim(20.0, new Date(2010, 10, 1)));
 
-        assertEquals(50.0, contract.LimitOfLiability());
+        assertEquals(70.0, contract.limitOfLiability());
     }
 
     @Test
-    public void TestClaimTotalSumOfClaimAmounts() {
+    public void limitOfLiabilityWithMultipleClaims() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
 
@@ -81,12 +69,24 @@ class ContractTest {
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
         contract.add(new Claim(20.0, new Date(2010, 10, 1)));
 
-        assertEquals(30.0, contract.ClaimTotal());
+        assertEquals(50.0, contract.limitOfLiability());
+    }
+
+    @Test
+    public void claimTotalSumOfClaimAmounts() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+
+        assertNotNull(contract.id);
+        contract.add(new Claim(10.0, new Date(2010, 10, 1)));
+        contract.add(new Claim(20.0, new Date(2010, 10, 1)));
+
+        assertEquals(30.0, contract.claimTotal());
     }
 
     // Entities compare by unique IDs, not properties
     @Test
-    public void TestContractEquality()
+    public void contractEquality()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract1 = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -100,5 +100,4 @@ class ContractTest {
         assertEquals(contract2, contract1);
         assertNotEquals(contract3, contract1);
     }
-
 }

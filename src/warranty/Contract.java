@@ -44,18 +44,18 @@ public class Contract {
         return Claims; 
     }
 
-    public boolean InEffectFor(Date failureDate) {
+    public boolean inEffectFor(Date failureDate) {
         return  (status == Status.ACTIVE) &&
                 (failureDate.compareTo(effectiveDate) >= 0) &&
                 (failureDate.compareTo(expirationDate) <= 0);
     }
 
-    public double LimitOfLiability() {
+    public double limitOfLiability() {
         final double liability_percentage = 0.8;
-        return (purchasePrice * liability_percentage) - ClaimTotal();
+        return (purchasePrice * liability_percentage) - claimTotal();
     }
 
-    public double ClaimTotal() {
+    public double claimTotal() {
         return this.getClaims().stream().mapToDouble(c -> c.amount).sum();
     }
 

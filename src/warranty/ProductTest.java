@@ -7,7 +7,7 @@ class ProductTest {
 
     // Product is an example of a value object. See https://martinfowler.com/bliki/ValueObject.html for more details
     @Test
-    public void TestProductEquality() {
+    public void productEquality() {
         // A value object must be created whole
         Product product = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
 
@@ -16,7 +16,7 @@ class ProductTest {
     }
     // Product is an example of a value object. See https://martinfowler.com/bliki/ValueObject.html for more details
     @Test
-    public void TestProductInequality() {
+    public void productInequality() {
         Product product = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
 
         // Demonstrate equality by property - uses custom "equals" method in this example
