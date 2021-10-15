@@ -15,20 +15,20 @@ import java.util.Date;
 
 public class ClaimsAdjudication {
 
-	public void Adjudicate(Contract contract, Claim newClaim) {
-		if ((LimitOfLiability(contract) > newClaim.amount) &&
-			 InEffectFor(contract, newClaim.failureDate)) {
+	public void adjudicate(Contract contract, Claim newClaim) {
+		if ((limitOfLiability(contract) > newClaim.amount) &&
+			 inEffectFor(contract, newClaim.failureDate)) {
 			contract.add(newClaim);
 		}
 	}
 
 	// These two new methods we've added seem to be responsibilities of Contract. Let's move them...
-	public double LimitOfLiability(Contract contract) {
+	public double limitOfLiability(Contract contract) {
 		double claimTotal = contract.getClaims().stream().mapToDouble(c -> c.amount).sum();
 		return (contract.purchasePrice - claimTotal) * 0.8;
 	}
 
-	public boolean InEffectFor(Contract contract, Date failureDate) {
+	public boolean inEffectFor(Contract contract, Date failureDate) {
 		return  (contract.status == Status.ACTIVE) &&
 				(failureDate.compareTo(contract.effectiveDate) >= 0) &&
 				(failureDate.compareTo(contract.expirationDate) <= 0);
