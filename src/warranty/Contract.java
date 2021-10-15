@@ -18,6 +18,7 @@ public class Contract {
     public Product                    coveredProduct;
 	public Status                     status;
     public TermsAndConditions         termsAndConditions;
+    public ArrayList                  events;
 
     public enum Status { PENDING, ACTIVE, EXPIRED }
 
@@ -28,6 +29,7 @@ public class Contract {
         this.coveredProduct     = product;
         this.status             = Status.PENDING;
         this.termsAndConditions = termsAndConditions;
+        this.events             = new ArrayList();
     }
 
     public void add(Claim Claim)
@@ -64,6 +66,7 @@ public class Contract {
 
     public void ExtendAnnualSubscription() {
         termsAndConditions = termsAndConditions.AnnuallyExtended();
+        events.add(new SubscriptionRenewed(id, "Automatic Annual Renewal"));
     }
 
     @Override

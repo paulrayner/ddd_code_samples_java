@@ -95,6 +95,10 @@ class ContractTest {
         var extendedTermsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2014, 5, 8));
 
         assertEquals(extendedTermsAndConditions, contract.termsAndConditions);
+        assertEquals(1, contract.events.size());
+        assertTrue(contract.events.get(0) instanceof SubscriptionRenewed);
+        assertEquals(contract.id, ((SubscriptionRenewed) contract.events.get(0)).contract_id);
+        assertEquals("Automatic Annual Renewal", ((SubscriptionRenewed) contract.events.get(0)).reason);
     }
 
     // Entities compare by unique IDs, not properties
