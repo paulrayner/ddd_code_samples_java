@@ -42,34 +42,34 @@ public class Contract {
         return Claims; 
     }
 
-    public boolean Covers(Claim claim) {
-        return  InEffectFor(claim.failureDate) &&
-                WithinLimitOfLiability(claim.amount);
+    public boolean covers(Claim claim) {
+        return  inEffectFor(claim.failureDate) &&
+                withinLimitOfLiability(claim.amount);
     }
 
-    public boolean InEffectFor(Date failureDate) {
-        return termsAndConditions.Status(failureDate) == Status.ACTIVE &&
+    public boolean inEffectFor(Date failureDate) {
+        return termsAndConditions.status(failureDate) == Status.ACTIVE &&
                status == Status.ACTIVE;
     }
 
-    public boolean WithinLimitOfLiability(double claimAmount) {
-        return claimAmount < RemainingLiability();
+    public boolean withinLimitOfLiability(double claimAmount) {
+        return claimAmount < remainingLiability();
     }
 
-    private double RemainingLiability() {
-        return termsAndConditions.LimitOfLiability(purchasePrice) - ClaimTotal();
+    private double remainingLiability() {
+        return termsAndConditions.limitOfLiability(purchasePrice) - claimTotal();
     }
 
-    public double ClaimTotal() {
+    public double claimTotal() {
         return this.getClaims().stream().mapToDouble(c -> c.amount).sum();
     }
 
-    public void ExtendAnnualSubscription() {
-        termsAndConditions = termsAndConditions.AnnuallyExtended();
+    public void extendAnnualSubscription() {
+        termsAndConditions = termsAndConditions.annuallyExtended();
         events.add(new SubscriptionRenewed(id, "Automatic Annual Renewal"));
     }
 
-    public void Terminate(String rep_name, String reason) {
+    public void terminate(String rep_name, String reason) {
         this.status = Status.FULFILLED;
         this.events.add(new CustomerReimbursementRequested(id, rep_name, reason));
     }

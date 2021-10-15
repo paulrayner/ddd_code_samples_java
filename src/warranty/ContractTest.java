@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContractTest {
 
     @Test
-    public void TestContractIsSetupCorrectly()
+    public void contractIsSetupCorrectly()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -24,26 +24,26 @@ class ContractTest {
     }
 
     @Test
-    public void TestContractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
+    public void contractInEffectBasedOnStatusAndEffectiveAndExpirationDateRange() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
         contract.status = Contract.Status.PENDING;
-        assertFalse(contract.InEffectFor(new Date(2010, 5, 9)));
+        assertFalse(contract.inEffectFor(new Date(2010, 5, 9)));
 
         contract.status = Contract.Status.ACTIVE;
-        assertFalse(contract.InEffectFor(new Date(2010, 5, 7)));
-        assertTrue(contract.InEffectFor(new Date(2010, 5, 8)));
-        assertTrue(contract.InEffectFor(new Date(2013, 5, 7)));
-        assertFalse(contract.InEffectFor(new Date(2013, 5, 9)));
+        assertFalse(contract.inEffectFor(new Date(2010, 5, 7)));
+        assertTrue(contract.inEffectFor(new Date(2010, 5, 8)));
+        assertTrue(contract.inEffectFor(new Date(2013, 5, 7)));
+        assertFalse(contract.inEffectFor(new Date(2013, 5, 9)));
 
         contract.status = Contract.Status.EXPIRED;
-        assertFalse(contract.InEffectFor(new Date(2010, 5, 8)));
+        assertFalse(contract.inEffectFor(new Date(2010, 5, 8)));
     }
 
     @Test
-    public void TestClaimTotalSumOfClaimAmounts() {
+    public void claimTotalSumOfClaimAmounts() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
@@ -51,47 +51,47 @@ class ContractTest {
         contract.add(new Claim(10.0, new Date(2010, 10, 1)));
         contract.add(new Claim(20.0, new Date(2010, 10, 1)));
 
-        assertEquals(30.0, contract.ClaimTotal());
+        assertEquals(30.0, contract.claimTotal());
     }
 
     @Test
-    public void TestClaimAmountsWithinLimitOfLiability() {
+    public void claimAmountsWithinLimitOfLiability() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        assertTrue(contract.WithinLimitOfLiability(10));
-        assertTrue(contract.WithinLimitOfLiability(79));
-        assertFalse(contract.WithinLimitOfLiability(80)); // Must be less than the limit amount
-        assertFalse(contract.WithinLimitOfLiability(90));
+        assertTrue(contract.withinLimitOfLiability(10));
+        assertTrue(contract.withinLimitOfLiability(79));
+        assertFalse(contract.withinLimitOfLiability(80)); // Must be less than the limit amount
+        assertFalse(contract.withinLimitOfLiability(90));
     }
 
     @Test
-    public void TestActiveContractCoverage() {
+    public void activeContractCoverage() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
         contract.status = Contract.Status.PENDING;
-        assertFalse(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
+        assertFalse(contract.covers(new Claim(10.0, new Date(2010, 10, 1))));
 
         contract.status = Contract.Status.ACTIVE;
-        assertTrue(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
-        assertTrue(contract.Covers(new Claim(79.0, new Date(2010, 10, 1))));
-        assertFalse(contract.Covers(new Claim(80.0, new Date(2010, 10, 1))));
-        assertFalse(contract.Covers(new Claim(90.0, new Date(2010, 10, 1))));
+        assertTrue(contract.covers(new Claim(10.0, new Date(2010, 10, 1))));
+        assertTrue(contract.covers(new Claim(79.0, new Date(2010, 10, 1))));
+        assertFalse(contract.covers(new Claim(80.0, new Date(2010, 10, 1))));
+        assertFalse(contract.covers(new Claim(90.0, new Date(2010, 10, 1))));
 
         contract.status = Contract.Status.EXPIRED;
-        assertFalse(contract.Covers(new Claim(10.0, new Date(2010, 10, 1))));
+        assertFalse(contract.covers(new Claim(10.0, new Date(2010, 10, 1))));
     }
 
     @Test
-    public void TestExtendAnnualSubscription() {
+    public void extendAnnualSubscription() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        contract.ExtendAnnualSubscription();
+        contract.extendAnnualSubscription();
         var extendedTermsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2014, 5, 8));
 
         assertEquals(extendedTermsAndConditions, contract.termsAndConditions);
@@ -101,13 +101,14 @@ class ContractTest {
         assertEquals("Automatic Annual Renewal", ((SubscriptionRenewed) contract.events.get(0)).reason);
     }
 
+// TODO: Practice using domain events by making the terminate contract test pass
     @Test
     public void TestTerminateContract() {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
         Contract contract = new Contract(100.0, product, termsAndConditions);
 
-        contract.Terminate("Debbie", "Limit of Liability Exceeded");
+        contract.terminate("Debbie", "Limit of Liability Exceeded");
 
         assertEquals(Contract.Status.FULFILLED, contract.status);
         assertEquals(1, contract.events.size());
@@ -119,7 +120,7 @@ class ContractTest {
 
     // Entities compare by unique IDs, not properties
     @Test
-    public void TestContractEquality()
+    public void contractEquality()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));

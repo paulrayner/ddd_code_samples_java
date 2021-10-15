@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClaimTest {
 
     @Test
-    public void TestClaimIsSetupCorrectly()
+    public void claimIsSetupCorrectly()
     {
         LineItem lineItem1 = new LineItem("PARTS", 45.0, "Replacement part for soap dispenser");
         LineItem lineItem2 = new LineItem("LABOR", 50.0, "1 hour repair");
@@ -33,7 +33,7 @@ class ClaimTest {
 
     // Entities compare by unique IDs, not properties
     @Test
-    public void TestClaimEquality()
+    public void claimEquality()
     {
         Claim claim1 = new Claim(100.0, new Date(2010, 5, 8));
         Claim claim2 = new Claim(100.0, new Date(2010, 5, 8));
