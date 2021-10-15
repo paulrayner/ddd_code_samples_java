@@ -20,7 +20,7 @@ public class Contract {
     public TermsAndConditions         termsAndConditions;
     public ArrayList                  events;
 
-    public enum Status { PENDING, ACTIVE, EXPIRED }
+    public enum Status { PENDING, ACTIVE, EXPIRED, FULFILLED }
 
     private final List<Claim> Claims = new ArrayList<Claim>();
 
@@ -67,6 +67,11 @@ public class Contract {
     public void ExtendAnnualSubscription() {
         termsAndConditions = termsAndConditions.AnnuallyExtended();
         events.add(new SubscriptionRenewed(id, "Automatic Annual Renewal"));
+    }
+
+    public void Terminate(String rep_name, String reason) {
+        this.status = Status.FULFILLED;
+        this.events.add(new CustomerReimbursementRequested(id, rep_name, reason));
     }
 
     @Override

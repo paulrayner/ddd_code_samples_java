@@ -101,6 +101,22 @@ class ContractTest {
         assertEquals("Automatic Annual Renewal", ((SubscriptionRenewed) contract.events.get(0)).reason);
     }
 
+    @Test
+    public void TestTerminateContract() {
+        Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
+        TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
+        Contract contract = new Contract(100.0, product, termsAndConditions);
+
+        contract.Terminate("Debbie", "Limit of Liability Exceeded");
+
+        assertEquals(Contract.Status.FULFILLED, contract.status);
+        assertEquals(1, contract.events.size());
+        assertTrue(contract.events.get(0) instanceof CustomerReimbursementRequested);
+        assertEquals(contract.id, ((CustomerReimbursementRequested) contract.events.get(0)).contract_id);
+        assertEquals("Debbie", ((CustomerReimbursementRequested) contract.events.get(0)).rep_name);
+        assertEquals("Limit of Liability Exceeded", ((CustomerReimbursementRequested) contract.events.get(0)).reason);
+    }
+
     // Entities compare by unique IDs, not properties
     @Test
     public void TestContractEquality()
