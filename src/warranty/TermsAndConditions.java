@@ -26,19 +26,19 @@ public class TermsAndConditions {
         this.expirationDate = expirationDate;
     }
 
-    public Contract.Status Status(Date date) {
+    public Contract.Status status(Date date) {
         if (date.compareTo(effectiveDate) < 0) return Contract.Status.PENDING;
         if (date.compareTo(expirationDate) > 0) return Contract.Status.EXPIRED;
         return Contract.Status.ACTIVE;
     }
 
-    public double LimitOfLiability(double purchasePrice) {
+    public double limitOfLiability(double purchasePrice) {
         final double liability_percentage = 0.8;
         return (purchasePrice * liability_percentage);
     }
 
-    public TermsAndConditions AnnuallyExtended() {
-        return new TermsAndConditions(purchaseDate, effectiveDate, IncreaseDateByOneYear(expirationDate));
+    public TermsAndConditions annuallyExtended() {
+        return new TermsAndConditions(purchaseDate, effectiveDate, increaseDateByOneYear(expirationDate));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TermsAndConditions {
     }
 
     // workaround for Date
-    private Date IncreaseDateByOneYear(Date date) {
+    private Date increaseDateByOneYear(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.YEAR, 1);

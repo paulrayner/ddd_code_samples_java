@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClaimsAdjudicationTest {
 
-    Contract FakeContract()
+    Contract fakeContract()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         TermsAndConditions termsAndConditions = new TermsAndConditions(new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -20,11 +20,11 @@ class ClaimsAdjudicationTest {
 
     // Now that we have this logic moved to Contract, we could create a test double for contract.Covers() and simplify these tests
     @Test
-    void AdjudicateValidClaim() {
-        Contract contract = FakeContract();
+    void adjudicateValidClaim() {
+        Contract contract = fakeContract();
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(1, contract.getClaims().size());
         assertEquals(79.0, contract.getClaims().get(0).amount);
@@ -32,52 +32,52 @@ class ClaimsAdjudicationTest {
     }
 
     @Test
-    void AdjudicateClaimWithInvalidAmount() {
-        Contract contract = FakeContract();
+    void adjudicateClaimWithInvalidAmount() {
+        Contract contract = fakeContract();
         Claim claim = new Claim(81.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimForPendingContract() {
-        Contract contract = FakeContract();
+    void adjudicateClaimForPendingContract() {
+        Contract contract = fakeContract();
         contract.status = Contract.Status.PENDING;
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimForExpiredContract() {
-        Contract contract = FakeContract();
+    void adjudicateClaimForExpiredContract() {
+        Contract contract = fakeContract();
         contract.status = Contract.Status.EXPIRED;
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimPriorToEffectiveDate() {
-        Contract contract = FakeContract();
+    void adjudicateClaimPriorToEffectiveDate() {
+        Contract contract = fakeContract();
         Claim claim = new Claim(79.0, new Date(2010, 5, 7));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
     @Test
-    void AdjudicateClaimAfterToExpirationDate() {
-        Contract contract = FakeContract();
+    void adjudicateClaimAfterToExpirationDate() {
+        Contract contract = fakeContract();
         Claim claim = new Claim(79.0, new Date(2013, 5, 9));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }

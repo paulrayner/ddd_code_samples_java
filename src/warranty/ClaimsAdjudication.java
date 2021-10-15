@@ -11,8 +11,8 @@ package warranty;
 
 public class ClaimsAdjudication {
 
-	public void Adjudicate(Contract contract, Claim newClaim) {
-		if (contract.Covers(newClaim)) {
+	public void adjudicate(Contract contract, Claim newClaim) {
+		if (contract.covers(newClaim)) {
 			contract.add(newClaim);
 		}
 	}
