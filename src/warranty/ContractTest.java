@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContractTest {
 
     @Test
-    public void TestContractIsSetupCorrectly()
+    public void contractIsSetupCorrectly()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));
@@ -26,7 +26,7 @@ class ContractTest {
 
     // Entities compare by unique IDs, not properties
     @Test
-    public void TestContractEquality()
+    public void contractEquality()
     {
         Product product  = new Product("dishwasher", "OEUOEU23", "Whirlpool", "7DP840CWDB0");
         Contract contract1 = new Contract(100.0, product, new Date(2010, 5, 7), new Date(2010, 5, 8), new Date(2013, 5, 8));

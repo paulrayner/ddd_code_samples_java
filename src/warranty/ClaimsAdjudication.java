@@ -13,7 +13,7 @@ import warranty.Contract.Status;
 
 public class ClaimsAdjudication {
 
-	public void Adjudicate(Contract contract, Claim newClaim) {
+	public void adjudicate(Contract contract, Claim newClaim) {
 		double claimTotal = contract.getClaims().stream().mapToDouble(c -> c.amount).sum();
 		if (((contract.purchasePrice - claimTotal) * 0.8 > newClaim.amount) &&
 				(contract.status == Status.ACTIVE) &&

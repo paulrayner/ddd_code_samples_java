@@ -18,11 +18,11 @@ class ClaimsAdjudicationTest {
     }
 
     @Test
-    void AdjudicateValidClaim() {
+    void adjudicateValidClaim() {
         Contract contract = FakeContract();
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(1, contract.getClaims().size());
         assertEquals(79.0, contract.getClaims().get(0).amount);
@@ -30,52 +30,52 @@ class ClaimsAdjudicationTest {
     }
 
     @Test
-    void AdjudicateClaimWithInvalidAmount() {
+    void adjudicateClaimWithInvalidAmount() {
         Contract contract = FakeContract();
         Claim claim = new Claim(81.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimForPendingContract() {
+    void adjudicateClaimForPendingContract() {
         Contract contract = FakeContract();
         contract.status = Contract.Status.PENDING;
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimForExpiredContract() {
+    void adjudicateClaimForExpiredContract() {
         Contract contract = FakeContract();
         contract.status = Contract.Status.EXPIRED;
         Claim claim = new Claim(79.0, new Date(2010, 5, 8));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
 
     @Test
-    void AdjudicateClaimPriorToEffectiveDate() {
+    void adjudicateClaimPriorToEffectiveDate() {
         Contract contract = FakeContract();
         Claim claim = new Claim(79.0, new Date(2010, 5, 7));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
     @Test
-    void AdjudicateClaimAfterToExpirationDate() {
+    void adjudicateClaimAfterToExpirationDate() {
         Contract contract = FakeContract();
         Claim claim = new Claim(79.0, new Date(2013, 5, 9));
 
-        new ClaimsAdjudication().Adjudicate(contract, claim);
+        new ClaimsAdjudication().adjudicate(contract, claim);
 
         assertEquals(0, contract.getClaims().size());
     }
